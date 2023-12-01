@@ -7,7 +7,6 @@ import blackjack.domain.user.Player;
 import blackjack.domain.user.PlayersFactory;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static blackjack.domain.game.GameRule.BLACK_JACK_GAME_THRESHOLD;
 import static blackjack.domain.game.GameRule.DEALER_THRESHOLD;
@@ -52,13 +51,6 @@ public class BlackJackGame {
         return dealer.getCardScore() < DEALER_THRESHOLD.getThreshold();
     }
 
-    private boolean dealerExceedsBlackjackThreshold() {
-        if (dealer.hasAceCard()) {
-            return isOverBlackJackThreshold(dealer.getCardScore() - 10);
-        }
-        return isOverBlackJackThreshold(dealer.getCardScore());
-    }
-
     public void addPlayerCard(Player player) {
         int cardScore = player.getCardScore();
         if (player.hasAceCard()) {
@@ -67,14 +59,6 @@ public class BlackJackGame {
         validateDrawCard(cardScore);
         player.addCard(cardBot.getCard());
     }
-    public void addDealerCard() {
-        int cardScore = dealer.getCardScore();
-        if (dealer.hasAceCard()) {
-            cardScore -= 10;
-        }
-        validateDrawCard(cardScore);
-        dealer.addCard(cardBot.getCard());
-    }
 
     private void validateDrawCard(int cardScore) {
         if (isOverBlackJackThreshold(cardScore)) {
@@ -82,7 +66,18 @@ public class BlackJackGame {
         }
     }
 
-    public boolean isOverBlackJackThreshold(int cardScore) {
+    public void addDealerCard() {
+        dealer.addCard(cardBot.getCard());
+    }
+
+    public boolean dealerExceedsBlackjackThreshold() {
+        if (dealer.hasAceCard()) {
+            return isOverBlackJackThreshold(dealer.getCardScore() - 10);
+        }
+        return isOverBlackJackThreshold(dealer.getCardScore());
+    }
+
+    private boolean isOverBlackJackThreshold(int cardScore) {
         return cardScore > BLACK_JACK_GAME_THRESHOLD.getThreshold();
     }
 
@@ -111,27 +106,35 @@ public class BlackJackGame {
                 .map(player -> getPlayersBettingMoneyResult(player, dealerCardScore))
                 .toList();
     }
-    public double getPlayersBettingMoneyResult(Player player, int dealerCardScore) {
+    private double getPlayersBettingMoneyResult(Player player, int dealerCardScore) {
         int playerResultScore = getPlayerResultScore(player);
+        double bettingMoney = player.getBettingMoney();
+        if (player.getCardSize() == 2 && isBlackJack(playerResultScore)) {
+            if (isBlackJack(dealer.getCardScore())) {
+                return bettingMoney;
+            }
+            return bettingMoney * 1.5;
+        }
         if (isOverBlackJackThreshold(playerResultScore)) {
-            return player.getBettingMoney() * -1;
+            return bettingMoney * -1;
         }
-        if (dealerCardScore < playerResultScore) {
-            return playerResultScore * 2;
+        if (dealerCardScore <= playerResultScore) {
+            return bettingMoney;
         }
-        return playerResultScore;
+        return bettingMoney * -1;
+    }
+
+    private boolean isBlackJack(int score) {
+        return BLACK_JACK_GAME_THRESHOLD.getThreshold() == score;
+    }
+    public boolean isBlackJack(Player player) {
+        return BLACK_JACK_GAME_THRESHOLD.getThreshold() == getPlayerResultScore(player);
     }
 
     public List<Double> getPlayersAllWinningResult() {
         return players.stream()
-                .map(player -> player.getBettingMoney() * 2)
+                .map(player -> player.getBettingMoney())
                 .toList();
-    }
-
-    public double getPlayersBettingMoney() {
-        return players.stream()
-                .mapToDouble(Player::getBettingMoney)
-                .sum();
     }
 
     public Dealer getDealer() {

@@ -45,4 +45,8 @@ public class Player {
     public List<Card> getCards() {
         return cards;
     }
+
+    public int getCardSize() {
+        return cards.size();
+    }
 }

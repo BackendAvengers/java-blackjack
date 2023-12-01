@@ -8,7 +8,6 @@ import blackjack.view.input.BlackJackGameInputView;
 import blackjack.view.output.BlackJackGameOutputView;
 
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.IntStream;
 
 public class BlackJackController {
@@ -36,28 +35,28 @@ public class BlackJackController {
         printResultBettingMoney(blackJackGame);
     }
 
+    // 죄송합니다.... 보기 흉하네요
+
     private void printResultBettingMoney(BlackJackGame blackJackGame) {
         int dealerResultScore = blackJackGame.getDealerResultScore();
         List<Player> players = blackJackGame.getPlayers();
-        double playersBettingMoney = blackJackGame.getPlayersBettingMoney();
 
-        if (blackJackGame.isOverBlackJackThreshold(dealerResultScore)) {
+        if (blackJackGame.dealerExceedsBlackjackThreshold()) {
             List<Double> bettingMoneyResult = blackJackGame.getPlayersAllWinningResult();
             outputView.printGameResult(createResultDto(bettingMoneyResult, players),
-                    calculateDealerBenefitMoney(playersBettingMoney, bettingMoneyResult));
+                    calculateDealerBenefitMoney(bettingMoneyResult));
             return;
         }
         List<Double> playersBettingMoneyResult = blackJackGame.getPlayersBettingMoneyResult(dealerResultScore);
         outputView.printGameResult(createResultDto(playersBettingMoneyResult, players),
-                calculateDealerBenefitMoney(playersBettingMoney, playersBettingMoneyResult));
+                calculateDealerBenefitMoney(playersBettingMoneyResult));
     }
-
-    private double calculateDealerBenefitMoney(double playersBettingMoney, List<Double> resultBettingMoney) {
+    private double calculateDealerBenefitMoney(List<Double> resultBettingMoney) {
         double resultSum = resultBettingMoney.stream()
                 .mapToDouble(value -> value)
                 .sum();
 
-        return playersBettingMoney - resultSum;
+        return resultSum * -1;
     }
 
     private List<PlayerResultDto> createResultDto(List<Double> bettingMoneyResults, List<Player> players) {
@@ -81,6 +80,9 @@ public class BlackJackController {
 
         List<Player> players = blackJackGame.getPlayers();
         for (Player player : players) {
+            if (blackJackGame.isBlackJack(player)) {
+                continue;
+            }
             while (inputView.shouldDrawCard(player)) {
                 blackJackGame.addPlayerCard(player);
                 outputView.printPlayerCardMessage(player);
