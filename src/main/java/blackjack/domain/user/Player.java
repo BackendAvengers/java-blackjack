@@ -23,5 +23,30 @@ public class Player {
     }
 
     // TODO 추가 기능 구현
+    public int getCardScore() {
+        return cards.stream()
+                .mapToInt(Card::getScore)
+                .sum();
+    }
 
+    public boolean hasAceCard() {
+        return cards.stream()
+                .anyMatch(Card::isAceCard);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getBettingMoney() {
+        return bettingMoney;
+    }
+
+    public List<Card> getCards() {
+        return cards;
+    }
+
+    public int getCardSize() {
+        return cards.size();
+    }
 }

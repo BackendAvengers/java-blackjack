@@ -1,11 +1,11 @@
 package blackjack.domain.card;
 
-import java.util.Objects;
-
 /**
  * 카드 한장을 의미하는 객체
  */
 public class Card {
+
+    private static final int ACE_BONUS_SCORE = 10;
     private final Symbol symbol;
 
     private final Type type;
@@ -16,26 +16,22 @@ public class Card {
     }
 
     // TODO Card 관련 추가 기능 구현
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Card card = (Card) o;
-        return symbol == card.symbol &&
-                type == card.type;
+    public int getScore() {
+        if (isAceCard()) {
+            return symbol.getScore() + ACE_BONUS_SCORE;
+        }
+        return symbol.getScore();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, type);
+    public boolean isAceCard() {
+        return Symbol.ACE.equals(symbol);
     }
 
-    @Override
-    public String toString() {
-        return "Card{" +
-                "symbol=" + symbol +
-                ", type=" + type +
-                '}';
+    public String getSymbol() {
+        return symbol.getSymbol();
+    }
+
+    public String getType() {
+        return type.getType();
     }
 }
