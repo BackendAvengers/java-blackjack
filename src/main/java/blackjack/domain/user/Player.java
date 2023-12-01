@@ -1,27 +1,29 @@
 package blackjack.domain.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import blackjack.domain.card.Card;
+import static blackjack.domain.constants.BlackjackConstraints.BLACKJACK_MAX_RESULT;
 
 /**
  * 게임 참여자를 의미하는 객체
  */
-public class Player {
+public class Player extends GameParticipant {
     private final String name;
     private final double bettingMoney;
-    private final List<Card> cards = new ArrayList<>();
 
     public Player(String name, double bettingMoney) {
         this.name = name;
         this.bettingMoney = bettingMoney;
     }
 
-    public void addCard(Card card) {
-        cards.add(card);
+    public String getName() {
+        return name;
     }
 
-    // TODO 추가 기능 구현
+    public double getBettingMoney() {
+        return bettingMoney;
+    }
 
+    @Override
+    public boolean canDraw() {
+        return getResult() < BLACKJACK_MAX_RESULT;
+    }
 }

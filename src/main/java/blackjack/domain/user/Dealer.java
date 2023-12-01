@@ -1,21 +1,15 @@
 package blackjack.domain.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import blackjack.domain.card.Card;
+import static blackjack.domain.constants.BlackjackConstraints.DEALER_DRAW_CARD_THRESHOLD;
 
 /**
  * 게임 딜러를 의미하는 객체
  */
-public class Dealer {
-    private final List<Card> cards = new ArrayList<>();
+public class Dealer extends GameParticipant {
 
-    public Dealer() {}
-
-    public void addCard(Card card) {
-        cards.add(card);
+    @Override
+    public boolean canDraw() {
+        int result = getResult();
+        return result <= DEALER_DRAW_CARD_THRESHOLD;
     }
-
-    // TODO 추가 기능 구현
 }
