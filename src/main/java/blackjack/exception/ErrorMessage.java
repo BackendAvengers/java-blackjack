@@ -2,6 +2,7 @@ package blackjack.exception;
 
 public enum ErrorMessage {
     INVALID_CHARACTER_CONTAINS_ON_NUMERIC_INPUT("숫자로만 입력해주세요."),
+    INVALID_CHARACTER_CONTAINS_ON_PLAYER_NAME_INPUT("플레이어 이름은 알파벳 대소문자와 숫자만 가능합니다."),
     INVALID_BET_AMOUNT_RANGE("베팅 금액은 10,000원 이상 100,000,000원 이하여야 합니다.");
 
     private static final String PREFIX = "[ERROR] ";
