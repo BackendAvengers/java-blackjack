@@ -2,6 +2,7 @@ package blackjack.view;
 
 import static blackjack.view.constants.Message.CARD_DECK_PER_PARTICIPANT;
 import static blackjack.view.constants.Message.DEALER_NAME;
+import static blackjack.view.constants.Message.DEALER_RECEIVE_CARD;
 import static blackjack.view.constants.Message.INITIAL_CARD_DECK_HEADER;
 import static blackjack.view.constants.Message.INPUT_BET_AMOUNT_PER_PLAYER;
 import static blackjack.view.constants.Message.INPUT_PLAYERS_NAME;
@@ -77,4 +78,10 @@ public class BlackjackView {
         String message = CARD_DECK_PER_PARTICIPANT.getValue(cardDeckDto.name(), getCardDeckMessage(cardDeckDto.deck()));
         writer.writeLine(message);
     }
+
+    public void outputDealerReceiveCard() {
+        writer.writeLine(DEALER_RECEIVE_CARD.getValue());
+    }
+
+
 }
