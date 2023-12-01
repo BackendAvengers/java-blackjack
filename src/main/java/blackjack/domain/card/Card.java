@@ -17,25 +17,4 @@ public class Card {
 
     // TODO Card 관련 추가 기능 구현
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Card card = (Card) o;
-        return symbol == card.symbol &&
-                type == card.type;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(symbol, type);
-    }
-
-    @Override
-    public String toString() {
-        return "Card{" +
-                "symbol=" + symbol +
-                ", type=" + type +
-                '}';
-    }
 }
