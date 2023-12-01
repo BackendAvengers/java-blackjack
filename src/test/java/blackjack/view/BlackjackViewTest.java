@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import blackjack.domain.card.Symbol;
 import blackjack.domain.card.Type;
 import blackjack.dto.CardDeckDto;
+import blackjack.dto.CardDeckResultDto;
+import blackjack.dto.CardDeckResultListDto;
 import blackjack.dto.CardDto;
 import blackjack.dto.InitialCardDeckDto;
 import blackjack.io.ConsoleReader;
@@ -55,5 +57,26 @@ class BlackjackViewTest {
                 """                   
                         a 카드: 9클로버, A하트"""
         );
+    }
+
+    @Test
+    void 게임참가자들의_카드덱과_카드합을_출력한다() {
+        //given
+        CardDeckResultListDto cardDeckResultListDto = new CardDeckResultListDto(List.of(
+                new CardDeckResultDto("딜러", List.of(
+                        new CardDto(Symbol.THREE, Type.DIAMOND),
+                        new CardDto(Symbol.NINE, Type.CLOVER),
+                        new CardDto(Symbol.EIGHT, Type.DIAMOND)), 20),
+                new CardDeckResultDto("pobi", List.of(
+                        new CardDto(Symbol.TWO, Type.HEART),
+                        new CardDto(Symbol.EIGHT, Type.SPADE),
+                        new CardDto(Symbol.ACE, Type.CLOVER)), 21)
+        ));
+        //when
+        blackjackView.outputCardDeckResult(cardDeckResultListDto);
+        //then
+        assertThat(stubConsoleWriter.getOutput()).isEqualTo("""
+                딜러 카드: 3다이아몬드, 9클로버, 8다이아몬드 - 결과: 20
+                pobi 카드: 2하트, 8스페이드, A클로버 - 결과: 21""");
     }
 }

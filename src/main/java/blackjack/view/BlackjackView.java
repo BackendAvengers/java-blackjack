@@ -1,5 +1,6 @@
 package blackjack.view;
 
+import static blackjack.view.constants.Message.CARD_DECK_AND_SUM_PER_PARTICIPANT;
 import static blackjack.view.constants.Message.CARD_DECK_PER_PARTICIPANT;
 import static blackjack.view.constants.Message.DEALER_NAME;
 import static blackjack.view.constants.Message.DEALER_RECEIVE_CARD;
@@ -10,6 +11,8 @@ import static blackjack.view.constants.Message.INPUT_RECEIVE_ADDITIONAL_CARD;
 import static blackjack.view.constants.Message.LINE_SEPARATOR;
 
 import blackjack.dto.CardDeckDto;
+import blackjack.dto.CardDeckResultDto;
+import blackjack.dto.CardDeckResultListDto;
 import blackjack.dto.CardDto;
 import blackjack.dto.InitialCardDeckDto;
 import blackjack.io.ConsoleReader;
@@ -83,5 +86,12 @@ public class BlackjackView {
         writer.writeLine(DEALER_RECEIVE_CARD.getValue());
     }
 
-
+    public void outputCardDeckResult(CardDeckResultListDto cardDeckResultListDto) {
+        List<CardDeckResultDto> cardDeckResultDtos = cardDeckResultListDto.cardDeckResultList();
+        String message = cardDeckResultDtos.stream()
+                .map(cardDeckResult -> CARD_DECK_AND_SUM_PER_PARTICIPANT.getValue(
+                        cardDeckResult.name(), getCardDeckMessage(cardDeckResult.deck()), cardDeckResult.result()))
+                .collect(Collectors.joining(LINE_SEPARATOR));
+        writer.writeLine(message);
+    }
 }
