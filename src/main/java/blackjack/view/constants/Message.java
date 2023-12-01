@@ -7,7 +7,9 @@ public enum Message {
     CARD_DECK_PER_PARTICIPANT("%s 카드: %s"),
     INPUT_RECEIVE_ADDITIONAL_CARD("%s는 한장의 카드를 더 받겠습니까?(예는 y, 아니오는 n)"),
     DEALER_RECEIVE_CARD("딜러는 16이하라 한장의 카드를 더 받았습니다."),
-    CARD_DECK_AND_SUM_PER_PARTICIPANT("%s 카드: %s - 결과: %d");
+    CARD_DECK_AND_SUM_PER_PARTICIPANT("%s 카드: %s - 결과: %d"),
+    PROFIT_HEADER("## 최종 수익"),
+    PROFIT_PER_PARTICIPANT("%s: %d");
 
     public static final String LINE_SEPARATOR = System.lineSeparator();
     public static final String DEALER_NAME = "딜러";

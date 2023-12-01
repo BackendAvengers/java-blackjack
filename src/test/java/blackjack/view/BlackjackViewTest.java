@@ -9,6 +9,7 @@ import blackjack.dto.CardDeckResultDto;
 import blackjack.dto.CardDeckResultListDto;
 import blackjack.dto.CardDto;
 import blackjack.dto.InitialCardDeckDto;
+import blackjack.dto.ProfitDto;
 import blackjack.io.ConsoleReader;
 import blackjack.stub.StubConsoleWriter;
 import java.util.LinkedHashMap;
@@ -78,5 +79,23 @@ class BlackjackViewTest {
         assertThat(stubConsoleWriter.getOutput()).isEqualTo("""
                 딜러 카드: 3다이아몬드, 9클로버, 8다이아몬드 - 결과: 20
                 pobi 카드: 2하트, 8스페이드, A클로버 - 결과: 21""");
+    }
+
+    @Test
+    void 모든게임참가자들의_최종수익을_출력한다() {
+        //given
+        Map<String, Integer> profit = new LinkedHashMap<>();
+        profit.put("딜러", 10000);
+        profit.put("pobi", 10000);
+        profit.put("jason", -20000);
+        ProfitDto profitDto = new ProfitDto(profit);
+        //when
+        blackjackView.outputProfit(profitDto);
+        //then
+        assertThat(stubConsoleWriter.getOutput()).isEqualTo("""
+                ## 최종 수익
+                딜러: 10000
+                pobi: 10000
+                jason: -20000""");
     }
 }

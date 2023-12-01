@@ -9,12 +9,15 @@ import static blackjack.view.constants.Message.INPUT_BET_AMOUNT_PER_PLAYER;
 import static blackjack.view.constants.Message.INPUT_PLAYERS_NAME;
 import static blackjack.view.constants.Message.INPUT_RECEIVE_ADDITIONAL_CARD;
 import static blackjack.view.constants.Message.LINE_SEPARATOR;
+import static blackjack.view.constants.Message.PROFIT_HEADER;
+import static blackjack.view.constants.Message.PROFIT_PER_PARTICIPANT;
 
 import blackjack.dto.CardDeckDto;
 import blackjack.dto.CardDeckResultDto;
 import blackjack.dto.CardDeckResultListDto;
 import blackjack.dto.CardDto;
 import blackjack.dto.InitialCardDeckDto;
+import blackjack.dto.ProfitDto;
 import blackjack.io.ConsoleReader;
 import blackjack.io.ConsoleWriter;
 import java.util.List;
@@ -93,5 +96,17 @@ public class BlackjackView {
                         cardDeckResult.name(), getCardDeckMessage(cardDeckResult.deck()), cardDeckResult.result()))
                 .collect(Collectors.joining(LINE_SEPARATOR));
         writer.writeLine(message);
+    }
+
+    public void outputProfit(ProfitDto profitDto) {
+        Map<String, Integer> profitPerParticipants = profitDto.profit();
+        String profitMessage = getProfitMessage(profitPerParticipants);
+        writer.writeLine(joinWithNewLines(PROFIT_HEADER.getValue(), profitMessage));
+    }
+
+    private String getProfitMessage(Map<String, Integer> profitPerParticipants) {
+        return profitPerParticipants.entrySet().stream()
+                .map(entry -> PROFIT_PER_PARTICIPANT.getValue(entry.getKey(), entry.getValue()))
+                .collect(Collectors.joining(LINE_SEPARATOR));
     }
 }
