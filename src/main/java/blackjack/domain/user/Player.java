@@ -38,6 +38,10 @@ public class Player {
         return name;
     }
 
+    public double getBettingMoney() {
+        return bettingMoney;
+    }
+
     public List<Card> getCards() {
         return cards;
     }

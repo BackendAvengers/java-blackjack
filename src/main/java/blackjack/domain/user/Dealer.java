@@ -31,7 +31,6 @@ public class Dealer {
                 .anyMatch(Card::isAceCard);
     }
 
-
     public List<Card> getCards() {
         return cards;
     }

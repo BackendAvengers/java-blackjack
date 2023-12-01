@@ -9,6 +9,7 @@ public class InputValidator {
 
     private static final Pattern CARD_DRAW_INPUT_PATTERN = Pattern.compile("[y|n]");
 
+    //중복 이름 체크하기
     public void validateNames(List<String> names) {
         if (names.stream().anyMatch(String::isBlank)) {
             throw new IllegalArgumentException(InputErrorMessage.NOT_BLANK_NAME_ERROR.getMessage());

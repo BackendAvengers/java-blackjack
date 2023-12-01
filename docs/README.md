@@ -1,5 +1,11 @@
 # 블랙잭 게임을 진행하는 프로그램을 구현한다.
 
+## DTO 사용 X (시간 소모가 생각보다 많음)
+## 중복 코드 제거 X
+- 중복으로 인한 BlackJackGame에서 public 메시지가 너무 많다.
+## 객체 책임 고려 X
+- 일부분은 생각하고 했지만 BlackJackGame 객체에 책임이 너무 크다.
+
 사용자가 입력하는 값은 camp.nextstep.edu.missionutils.Console의 readLine()을 활용한다.
 블랙잭 게임은 딜러와 플레이어 중 카드 합이 21 또는 21에 가장 가까운 숫자를 가지는 쪽이 이기는 게임이다.
 
