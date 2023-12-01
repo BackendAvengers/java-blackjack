@@ -8,6 +8,9 @@ import blackjack.domain.user.PlayersFactory;
 
 import java.util.List;
 
+import static blackjack.domain.game.GameRule.BLACK_JACK_GAME_THRESHOLD;
+import static blackjack.domain.game.GameRule.DEALER_THRESHOLD;
+
 public class BlackJackGame {
 
     private final Dealer dealer;
@@ -42,5 +45,30 @@ public class BlackJackGame {
             List<Card> dealCards = cardBot.getDealCards();
             dealCards.forEach(player::addCard);
         });
+    }
+
+    public boolean dealerPlayRound() {
+        //딜러가 17 이하의 숫자를 가지면 한장 더가져야한다.
+        if (dealer.getCardScore() < DEALER_THRESHOLD.getThreshold()) {
+            dealer.addCard(cardBot.getCard());
+        }
+
+        //3장이 되었을 때 21이 넘으면 패배한다.
+        return dealerExceedsBlackjackThreshold();
+    }
+
+    private boolean dealerExceedsBlackjackThreshold() {
+        if (dealer.hasAceCard()) {
+            return dealer.getCardScore() - 10 > BLACK_JACK_GAME_THRESHOLD.getThreshold();
+        }
+        return dealer.getCardScore() > BLACK_JACK_GAME_THRESHOLD.getThreshold();
+    }
+
+    public Dealer getDealer() {
+        return dealer;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 }
