@@ -5,6 +5,7 @@ import static blackjack.view.constants.Message.INITIAL_CARD_DECK_HEADER;
 import static blackjack.view.constants.Message.INITIAL_CARD_DECK_PER_PARTICIPANT;
 import static blackjack.view.constants.Message.INPUT_BET_AMOUNT_PER_PLAYER;
 import static blackjack.view.constants.Message.INPUT_PLAYERS_NAME;
+import static blackjack.view.constants.Message.INPUT_RECEIVE_ADDITIONAL_CARD;
 import static blackjack.view.constants.Message.LINE_SEPARATOR;
 
 import blackjack.dto.CardDto;
@@ -35,6 +36,10 @@ public class BlackjackView {
 
     public String inputBetAmount(String name){
         return inputWithMessage(INPUT_BET_AMOUNT_PER_PLAYER.getValue(name));
+    }
+
+    public String inputReceiveAdditionalCard(String name) {
+        return inputWithMessage(INPUT_RECEIVE_ADDITIONAL_CARD.getValue(name));
     }
 
     private String joinWithNewLines(String... messages) {
