@@ -1,15 +1,28 @@
 package blackjack.view;
 
-import static blackjack.view.constants.Message.INPUT_BET_AMOUNT_FORMAT;
+import static blackjack.view.constants.Message.DEALER_NAME;
+import static blackjack.view.constants.Message.INITIAL_CARD_DECK_HEADER;
+import static blackjack.view.constants.Message.INITIAL_CARD_DECK_PER_PARTICIPANT;
+import static blackjack.view.constants.Message.INPUT_BET_AMOUNT_PER_PLAYER;
 import static blackjack.view.constants.Message.INPUT_PLAYERS_NAME;
-import static java.lang.String.format;
+import static blackjack.view.constants.Message.LINE_SEPARATOR;
 
+import blackjack.dto.CardDto;
+import blackjack.dto.InitialCardDeckDto;
 import blackjack.io.ConsoleReader;
 import blackjack.io.ConsoleWriter;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BlackjackView {
-    private final ConsoleReader reader = new ConsoleReader();
-    private final ConsoleWriter writer = new ConsoleWriter();
+    private final ConsoleReader reader;
+    private final ConsoleWriter writer;
+
+    public BlackjackView(ConsoleReader reader, ConsoleWriter writer) {
+        this.reader = reader;
+        this.writer = writer;
+    }
 
     private String inputWithMessage(String inputMessage) {
         writer.writeLine(inputMessage);
@@ -21,6 +34,36 @@ public class BlackjackView {
     }
 
     public String inputBetAmount(String name){
-        return inputWithMessage(INPUT_BET_AMOUNT_FORMAT.getValue(name));
+        return inputWithMessage(INPUT_BET_AMOUNT_PER_PLAYER.getValue(name));
+    }
+
+    private String joinWithNewLines(String... messages) {
+        return String.join(LINE_SEPARATOR, messages);
+    }
+
+    public void outputInitialCardDeck(InitialCardDeckDto initialCardDeckDto) {
+        Map<String, List<CardDto>> initialCardDeck = initialCardDeckDto.deck();
+        String headerMessage = INITIAL_CARD_DECK_HEADER.getValue(getParticipantName(initialCardDeck));
+        String cardDeckListMessage = getCardDeckListMessage(initialCardDeck);
+        writer.writeLine(joinWithNewLines(LINE_SEPARATOR, headerMessage, cardDeckListMessage));
+    }
+
+    private String getParticipantName(Map<String, List<CardDto>> initialCardDeck) {
+        return initialCardDeck.keySet().stream()
+                .filter(name -> !name.equals(DEALER_NAME))
+                .collect(Collectors.joining(", "));
+    }
+
+    private String getCardDeckListMessage(Map<String, List<CardDto>> initialCardDeck) {
+        return initialCardDeck.entrySet().stream()
+                .map(entry -> INITIAL_CARD_DECK_PER_PARTICIPANT.getValue(
+                        entry.getKey(), getCardDeckMessage(entry.getValue())))
+                .collect(Collectors.joining(LINE_SEPARATOR));
+    }
+
+    private String getCardDeckMessage(List<CardDto> deck) {
+        return deck.stream()
+                .map(CardDto::toMessage)
+                .collect(Collectors.joining(", "));
     }
 }

@@ -2,8 +2,13 @@ package blackjack.view.constants;
 
 public enum Message {
     INPUT_PLAYERS_NAME("게임에 참여할 사람의 이름을 입력하세요.(쉼표 기준으로 분리)"),
-    INPUT_BET_AMOUNT_FORMAT("%s의 베팅 금액은?");
+    INPUT_BET_AMOUNT_PER_PLAYER("%s의 베팅 금액은?"),
+    INITIAL_CARD_DECK_HEADER("딜러와 %s에게 2장의 카드를 나누었습니다."),
+    INITIAL_CARD_DECK_PER_PARTICIPANT("%s 카드: %s");
 
+
+    public static final String LINE_SEPARATOR = System.lineSeparator();
+    public static final String DEALER_NAME = "딜러";
     private final String value;
 
     Message(String value) {
@@ -15,6 +20,6 @@ public enum Message {
     }
 
     public String getValue(Object... args) {
-        return String.format(INPUT_BET_AMOUNT_FORMAT.value, args);
+        return String.format(this.value, args);
     }
 }
