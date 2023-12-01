@@ -84,10 +84,10 @@ class BlackjackViewTest {
     @Test
     void 모든게임참가자들의_최종수익을_출력한다() {
         //given
-        Map<String, Integer> profit = new LinkedHashMap<>();
-        profit.put("딜러", 10000);
-        profit.put("pobi", 10000);
-        profit.put("jason", -20000);
+        Map<String, Double> profit = new LinkedHashMap<>();
+        profit.put("딜러", 10000D);
+        profit.put("pobi", 10000D);
+        profit.put("jason", -20000D);
         ProfitDto profitDto = new ProfitDto(profit);
         //when
         blackjackView.outputProfit(profitDto);

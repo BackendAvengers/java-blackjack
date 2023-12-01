@@ -1,13 +1,24 @@
 package blackjack.controller;
 
+import static blackjack.domain.constants.BlackjackConstraints.isUniquePlayerName;
+import static blackjack.domain.constants.BlackjackConstraints.isValidBettingMoneyRange;
+import static blackjack.domain.constants.BlackjackConstraints.isValidPlayerNameLength;
+import static blackjack.exception.ErrorMessage.DUPLICATED_PLAYER_NAME;
+import static blackjack.exception.ErrorMessage.INVALID_BET_AMOUNT_RANGE;
+import static blackjack.exception.ErrorMessage.INVALID_PLAYER_NAME_LENGTH;
+import static blackjack.exception.ErrorMessage.INVALID_PLAYER_SIZE;
+
 import blackjack.domain.card.CardFactory;
 import blackjack.domain.game.BlackjackGame;
 import blackjack.domain.user.Dealer;
 import blackjack.domain.user.GameParticipant;
 import blackjack.domain.user.Player;
 import blackjack.dto.CardDeckDto;
+import blackjack.dto.CardDeckResultDto;
+import blackjack.dto.CardDeckResultListDto;
 import blackjack.dto.CardDto;
 import blackjack.dto.InitialCardDeckDto;
+import blackjack.dto.ProfitDto;
 import blackjack.io.ConsoleReader;
 import blackjack.io.ConsoleWriter;
 import blackjack.util.Parser;
@@ -25,11 +36,27 @@ public class BlackjackController {
 
     public void run() {
         BlackjackGame blackjackGame = initGame(participantInGame());
-        blackjackGame.distibuteCard();
+        blackjackGame.distributeCard();
         outputDistributionResult(blackjackGame);
         drawCardForAllPlayers(blackjackGame);
         drawCardForDealer(blackjackGame);
+        outputCardDeck(blackjackGame);
+        Map<String, Double> profit = blackjackGame.calculateProfit();
+        blackjackView.outputProfit(new ProfitDto(profit));
+    }
 
+    private void outputCardDeck(BlackjackGame blackjackGame) {
+        Dealer dealer = blackjackGame.getDealer();
+
+        List<CardDeckResultDto> result = new ArrayList<>();
+        result.add(new CardDeckResultDto("딜러", getCardDtoList(dealer), dealer.getResult()));
+        List<CardDeckResultDto> playersResult = blackjackGame.getPlayerList().stream()
+                .map(player -> new CardDeckResultDto(
+                        player.getName(), getCardDtoList(player), player.getResult()))
+                .toList();
+        result.addAll(playersResult);
+        CardDeckResultListDto cardDeckResultListDto = new CardDeckResultListDto(result);
+        blackjackView.outputCardDeckResult(cardDeckResultListDto);
     }
 
     private void drawCardForDealer(BlackjackGame blackjackGame) {
@@ -39,7 +66,6 @@ public class BlackjackController {
             blackjackView.outputDealerReceiveCard();
         }
     }
-
 
     private void drawCardForAllPlayers(BlackjackGame blackjackGame) {
         List<Player> playerList = blackjackGame.getPlayerList();
@@ -73,7 +99,19 @@ public class BlackjackController {
         while (true) {
             try {
                 String playersNameInput = blackjackView.inputPlayersName();
-                return Parser.parsePlayerNameList(playersNameInput);
+                List<String> playerNames = Parser.parsePlayerNameList(playersNameInput);
+                if (isValidPlayerNameLength(playerNames)) {
+                    throw new IllegalArgumentException(INVALID_PLAYER_SIZE.getValue());
+                }
+                if (isUniquePlayerName(playerNames)) {
+                    throw new IllegalArgumentException(DUPLICATED_PLAYER_NAME.getValue());
+                }
+                for (String playerName : playerNames) {
+                    if (isValidPlayerNameLength(playerName)) {
+                        throw new IllegalArgumentException(INVALID_PLAYER_NAME_LENGTH.getValue());
+                    }
+                }
+                return playerNames;
             } catch (IllegalArgumentException e) {
                 blackjackView.outputError(e.getMessage());
             }
@@ -84,7 +122,10 @@ public class BlackjackController {
         while (true) {
             try {
                 String betAmountInput = blackjackView.inputBetAmount(name);
-                return Parser.parseInt(betAmountInput);
+                int bettingMoney = Parser.parseInt(betAmountInput);
+                if (isValidBettingMoneyRange(bettingMoney)) {
+                    throw new IllegalArgumentException(INVALID_BET_AMOUNT_RANGE.getValue());
+                }
             } catch (IllegalArgumentException e) {
                 blackjackView.outputError(e.getMessage());
             }

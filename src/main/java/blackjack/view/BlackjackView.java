@@ -99,14 +99,14 @@ public class BlackjackView {
     }
 
     public void outputProfit(ProfitDto profitDto) {
-        Map<String, Integer> profitPerParticipants = profitDto.profit();
+        Map<String, Double> profitPerParticipants = profitDto.profit();
         String profitMessage = getProfitMessage(profitPerParticipants);
         writer.writeLine(joinWithNewLines(PROFIT_HEADER.getValue(), profitMessage));
     }
 
-    private String getProfitMessage(Map<String, Integer> profitPerParticipants) {
+    private String getProfitMessage(Map<String, Double> profitPerParticipants) {
         return profitPerParticipants.entrySet().stream()
-                .map(entry -> PROFIT_PER_PARTICIPANT.getValue(entry.getKey(), entry.getValue()))
+                .map(entry -> PROFIT_PER_PARTICIPANT.getValue(entry.getKey(), entry.getValue().intValue()))
                 .collect(Collectors.joining(LINE_SEPARATOR));
     }
 
