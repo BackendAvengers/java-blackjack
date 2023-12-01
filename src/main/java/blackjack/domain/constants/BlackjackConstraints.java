@@ -28,7 +28,7 @@ public class BlackjackConstraints {
         return uniquePlayers.size() == playerNames.size();
     }
 
-    public static boolean isValidPlayerNameLength(List<String> player) {
+    public static boolean isValidPlayerSize(List<String> player) {
         int size = player.size();
         return PLAYER_MIN_SIZE <= size && size <= PLAYER_MAX_SIZE;
     }

@@ -23,7 +23,7 @@ public class BlackjackGame {
         this.dealer = dealer;
         this.playerList = playerList;
         this.participants.add(dealer);
-        this.participants.add((GameParticipant) playerList);
+        this.participants.addAll(playerList);
 
         this.cardList = cardList;
     }
@@ -38,9 +38,7 @@ public class BlackjackGame {
 
     public Card drawCard() {
         int cardIdx = Randoms.pickNumberInRange(0, cardList.size() - 1);
-        Card card = cardList.get(cardIdx);
-        cardList.remove(cardIdx);
-        return card;
+        return cardList.get(cardIdx);
     }
 
     public Map<String, Double> calculateProfit() {
@@ -48,6 +46,7 @@ public class BlackjackGame {
         int dealerResult = dealer.getResult();
         boolean isDealerOver = isOver(dealerResult);
 
+        profit.put("딜러", 0D);
         for (Player player : playerList) {
             int result = player.getResult();
             updateProfit(player, result, profit, isDealerOver, dealerResult);

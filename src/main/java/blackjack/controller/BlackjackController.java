@@ -3,6 +3,7 @@ package blackjack.controller;
 import static blackjack.domain.constants.BlackjackConstraints.isUniquePlayerName;
 import static blackjack.domain.constants.BlackjackConstraints.isValidBettingMoneyRange;
 import static blackjack.domain.constants.BlackjackConstraints.isValidPlayerNameLength;
+import static blackjack.domain.constants.BlackjackConstraints.isValidPlayerSize;
 import static blackjack.exception.ErrorMessage.DUPLICATED_PLAYER_NAME;
 import static blackjack.exception.ErrorMessage.INVALID_BET_AMOUNT_RANGE;
 import static blackjack.exception.ErrorMessage.INVALID_PLAYER_NAME_LENGTH;
@@ -100,14 +101,14 @@ public class BlackjackController {
             try {
                 String playersNameInput = blackjackView.inputPlayersName();
                 List<String> playerNames = Parser.parsePlayerNameList(playersNameInput);
-                if (isValidPlayerNameLength(playerNames)) {
+                if (!isValidPlayerSize(playerNames)) {
                     throw new IllegalArgumentException(INVALID_PLAYER_SIZE.getValue());
                 }
-                if (isUniquePlayerName(playerNames)) {
+                if (!isUniquePlayerName(playerNames)) {
                     throw new IllegalArgumentException(DUPLICATED_PLAYER_NAME.getValue());
                 }
                 for (String playerName : playerNames) {
-                    if (isValidPlayerNameLength(playerName)) {
+                    if (!isValidPlayerNameLength(playerName)) {
                         throw new IllegalArgumentException(INVALID_PLAYER_NAME_LENGTH.getValue());
                     }
                 }
@@ -123,9 +124,10 @@ public class BlackjackController {
             try {
                 String betAmountInput = blackjackView.inputBetAmount(name);
                 int bettingMoney = Parser.parseInt(betAmountInput);
-                if (isValidBettingMoneyRange(bettingMoney)) {
+                if (!isValidBettingMoneyRange(bettingMoney)) {
                     throw new IllegalArgumentException(INVALID_BET_AMOUNT_RANGE.getValue());
                 }
+                return bettingMoney;
             } catch (IllegalArgumentException e) {
                 blackjackView.outputError(e.getMessage());
             }
