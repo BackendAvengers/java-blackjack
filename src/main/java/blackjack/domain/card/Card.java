@@ -1,7 +1,5 @@
 package blackjack.domain.card;
 
-import java.util.Objects;
-
 /**
  * 카드 한장을 의미하는 객체
  */
