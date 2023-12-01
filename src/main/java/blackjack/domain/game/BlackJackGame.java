@@ -64,6 +64,14 @@ public class BlackJackGame {
         return dealer.getCardScore() > BLACK_JACK_GAME_THRESHOLD.getThreshold();
     }
 
+    public void addPlayerCard(Player player) {
+        int cardScore = player.getCardScore();
+        if (cardScore > BLACK_JACK_GAME_THRESHOLD.getThreshold()) {
+            throw new IllegalStateException(GameErrorMessage.INVALID_DRAW_CARD.getMessage());
+        }
+        player.addCard(cardBot.getCard());
+    }
+
     public Dealer getDealer() {
         return dealer;
     }

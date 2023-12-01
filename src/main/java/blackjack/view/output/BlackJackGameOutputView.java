@@ -18,14 +18,7 @@ public class BlackJackGameOutputView {
     }
 
     private void printPlayersCard(List<Player> players) {
-        players.forEach(
-                player -> {
-                    String name = player.getName();
-                    String cardMessageFormat = getCardMessageFormat(player.getCards());
-                    System.out.println(String.format(
-                            OutputMessage.CARD_DISTRIBUTION.getMessage(),name,cardMessageFormat));
-                }
-        );
+        players.forEach(this::printPlayerCardMessage);
     }
 
     private String getPlayerNames(List<Player> players) {
@@ -43,5 +36,11 @@ public class BlackJackGameOutputView {
     private void printDealerCard(String cardMessageFormat) {
         System.out.println(String.format(
                 OutputMessage.CARD_DISTRIBUTION.getMessage(), DEALER_NAME, cardMessageFormat));
+    }
+
+    public void printPlayerCardMessage(Player player) {
+        String name = player.getName();
+        String cardMessageFormat = getCardMessageFormat(player.getCards());
+        System.out.println(String.format(OutputMessage.CARD_DISTRIBUTION.getMessage(), name, cardMessageFormat));
     }
 }

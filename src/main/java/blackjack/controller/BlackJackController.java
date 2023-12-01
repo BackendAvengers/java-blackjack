@@ -1,6 +1,7 @@
 package blackjack.controller;
 
 import blackjack.domain.game.BlackJackGame;
+import blackjack.domain.user.Player;
 import blackjack.view.input.BlackJackGameInputView;
 import blackjack.view.output.BlackJackGameOutputView;
 
@@ -25,6 +26,13 @@ public class BlackJackController {
         blackJackGame.dealInitialCards();
         outputView.printCardDistribution(blackJackGame.getDealer(),blackJackGame.getPlayers());
 
+        List<Player> players = blackJackGame.getPlayers();
+        for (Player player : players) {
+            while (inputView.shouldDrawCard(player)) {
+                blackJackGame.addPlayerCard(player);
+                outputView.printPlayerCardMessage(player);
+            }
+        }
 
     }
 
