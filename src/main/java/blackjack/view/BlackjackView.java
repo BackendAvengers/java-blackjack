@@ -1,13 +1,14 @@
 package blackjack.view;
 
+import static blackjack.view.constants.Message.CARD_DECK_PER_PARTICIPANT;
 import static blackjack.view.constants.Message.DEALER_NAME;
 import static blackjack.view.constants.Message.INITIAL_CARD_DECK_HEADER;
-import static blackjack.view.constants.Message.INITIAL_CARD_DECK_PER_PARTICIPANT;
 import static blackjack.view.constants.Message.INPUT_BET_AMOUNT_PER_PLAYER;
 import static blackjack.view.constants.Message.INPUT_PLAYERS_NAME;
 import static blackjack.view.constants.Message.INPUT_RECEIVE_ADDITIONAL_CARD;
 import static blackjack.view.constants.Message.LINE_SEPARATOR;
 
+import blackjack.dto.CardDeckDto;
 import blackjack.dto.CardDto;
 import blackjack.dto.InitialCardDeckDto;
 import blackjack.io.ConsoleReader;
@@ -61,7 +62,7 @@ public class BlackjackView {
 
     private String getCardDeckListMessage(Map<String, List<CardDto>> initialCardDeck) {
         return initialCardDeck.entrySet().stream()
-                .map(entry -> INITIAL_CARD_DECK_PER_PARTICIPANT.getValue(
+                .map(entry -> CARD_DECK_PER_PARTICIPANT.getValue(
                         entry.getKey(), getCardDeckMessage(entry.getValue())))
                 .collect(Collectors.joining(LINE_SEPARATOR));
     }
@@ -70,5 +71,10 @@ public class BlackjackView {
         return deck.stream()
                 .map(CardDto::toMessage)
                 .collect(Collectors.joining(", "));
+    }
+
+    public void outputCardDeckPerPlayer(CardDeckDto cardDeckDto) {
+        String message = CARD_DECK_PER_PARTICIPANT.getValue(cardDeckDto.name(), getCardDeckMessage(cardDeckDto.deck()));
+        writer.writeLine(message);
     }
 }

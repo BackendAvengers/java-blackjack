@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import blackjack.domain.card.Symbol;
 import blackjack.domain.card.Type;
+import blackjack.dto.CardDeckDto;
 import blackjack.dto.CardDto;
 import blackjack.dto.InitialCardDeckDto;
 import blackjack.io.ConsoleReader;
@@ -33,12 +34,26 @@ class BlackjackViewTest {
         blackjackView.outputInitialCardDeck(initialCardDeckDto);
         //then
         assertThat(stubConsoleWriter.getOutput()).isEqualTo("""
-                                        
-                                                
+                                
+                                
                 딜러와 a, b에게 2장의 카드를 나누었습니다.
                 딜러 카드: 6클로버, 10하트
                 a 카드: 9클로버, A하트
                 b 카드: K스페이드, Q다이아몬드"""
+        );
+    }
+
+    @Test
+    void 플레이어의_카드덱을_출력한다() {
+        //given
+        CardDeckDto cardDeckDto = new CardDeckDto("a", List.of(
+                new CardDto(Symbol.NINE, Type.CLOVER), new CardDto(Symbol.ACE, Type.HEART)));
+        //when
+        blackjackView.outputCardDeckPerPlayer(cardDeckDto);
+        //then
+        assertThat(stubConsoleWriter.getOutput()).isEqualTo(
+                """                   
+                        a 카드: 9클로버, A하트"""
         );
     }
 }
