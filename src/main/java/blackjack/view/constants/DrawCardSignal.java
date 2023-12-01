@@ -21,4 +21,8 @@ public enum DrawCardSignal {
         }
         return Optional.empty();
     }
+
+    public boolean canDraw() {
+        return this.equals(DRAW);
+    }
 }

@@ -1,6 +1,9 @@
 package blackjack.domain.card;
 
 public enum Symbol {
+    /**
+     * todo ace 11로도 계산 가능
+     */
     ACE(1, "A"),
     TWO(2, "2"),
     THREE(3, "3"),

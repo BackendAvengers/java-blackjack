@@ -46,7 +46,7 @@ public class BlackjackView {
         return inputWithMessage(INPUT_BET_AMOUNT_PER_PLAYER.getValue(name));
     }
 
-    public String inputReceiveAdditionalCard(String name) {
+    public String inputDrawCardSignal(String name) {
         return inputWithMessage(INPUT_RECEIVE_ADDITIONAL_CARD.getValue(name));
     }
 
@@ -108,5 +108,9 @@ public class BlackjackView {
         return profitPerParticipants.entrySet().stream()
                 .map(entry -> PROFIT_PER_PARTICIPANT.getValue(entry.getKey(), entry.getValue()))
                 .collect(Collectors.joining(LINE_SEPARATOR));
+    }
+
+    public void outputError(String message) {
+        writer.writeLine(message);
     }
 }
