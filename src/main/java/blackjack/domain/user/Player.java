@@ -24,6 +24,6 @@ public class Player extends GameParticipant {
 
     @Override
     public boolean canDraw() {
-        return calculateResult() < BLACKJACK_MAX_RESULT;
+        return getResult() < BLACKJACK_MAX_RESULT;
     }
 }

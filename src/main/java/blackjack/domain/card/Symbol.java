@@ -1,9 +1,6 @@
 package blackjack.domain.card;
 
 public enum Symbol {
-    /**
-     * todo ace 11로도 계산 가능
-     */
     ACE(1, "A"),
     TWO(2, "2"),
     THREE(3, "3"),
@@ -18,6 +15,7 @@ public enum Symbol {
     QUEEN(10, "Q"),
     KING(10, "K");
 
+    public static final int ACE_SECOND_SCORE = 11;
     private final int score;
     private final String shortValue;
 

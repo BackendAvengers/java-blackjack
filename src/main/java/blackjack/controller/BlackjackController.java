@@ -28,15 +28,25 @@ public class BlackjackController {
         blackjackGame.distibuteCard();
         outputDistributionResult(blackjackGame);
         drawCardForAllPlayers(blackjackGame);
+        drawCardForDealer(blackjackGame);
 
     }
+
+    private void drawCardForDealer(BlackjackGame blackjackGame) {
+        Dealer dealer = blackjackGame.getDealer();
+        if (dealer.canDraw()) {
+            dealer.addCard(blackjackGame.drawCard());
+            blackjackView.outputDealerReceiveCard();
+        }
+    }
+
 
     private void drawCardForAllPlayers(BlackjackGame blackjackGame) {
         List<Player> playerList = blackjackGame.getPlayerList();
         for (Player player : playerList) {
             DrawCardSignal drawCardSignal = getDrawCardSignal(player.getName());
             if (drawCardSignal.canDraw() && player.canDraw()) {
-                blackjackGame.drawCard();
+                player.addCard(blackjackGame.drawCard());
             }
             CardDeckDto cardDeckDto = new CardDeckDto(player.getName(), getCardDtoList(player));
             blackjackView.outputCardDeckPerPlayer(cardDeckDto);
